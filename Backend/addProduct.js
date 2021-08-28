@@ -1,55 +1,70 @@
 var express = require('express');
 var cheerio = require("cheerio");
 var router = express.Router();
-var request= require("request");
+var request= require("request-promise");
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb+srv://admin:admin@producttracking.7oyuk.mongodb.net/admin1?retryWrites=true&w=majority";
-
+var cost,link1,mail1;
 
 
 router.post('/',function(req, res) {
     
     // console.log(req.query.link);
     // console.log(req.query.user_email);
-    MongoClient.connect(url, { useNewUrlParser: true ,useUnifiedTopology: true},function(err, db) {
-        if (err) throw err;
-        var dbo = db.db("admin1");
-        var link1=req.query.link;
-        var price1=getPrice(link1);
-        console.log(price1);
-        // getPrice(link1).then(function(res){
-        //     price1=link1;
-        //     console.log(price1);
-        // });
-        
-        var mail1=req.query.user_email;
-        var myobj={ link :link1,price:price1,mail:mail1};
-        dbo.collection("maincollection").insertOne(myobj,(err,res)=>{
-            if(err) throw err;
-            console.log("INSERTED");
-            db.close();
-        })
-        
-      });
-      res.send("DONE");
+    
+    link1=req.query.link;
+    getPrice(link1)
+    //console.log(cost);
+    mail1=req.query.user_email;
+    res.send("DONE");
 
 });
-async function getPrice(link){
-    var cost;
-    request(link, async (err,res,html)=>{
+function getPrice(link){
+   
+    request(link, (err,res,html)=>{
         var $ = cheerio.load(html);
+
+        $("#priceblock_dealprice").filter(function(){
+            var data=$(this);
+            cost=data.text();
+           // console.log(cost);
+            MongoClient.connect(url, { useNewUrlParser: true ,useUnifiedTopology: true},async function(err, db) {
+                if (err) throw err;
+                var dbo = db.db("admin1");
+                var myobj={ link :link1,price:cost,mail:mail1};
+                console.log(cost);
+                dbo.collection("maincollection").insertOne(myobj,(err,res)=>{
+                    if(err) throw err;
+                    console.log("INSERTED");
+                    db.close();
+                })
+                
+              });
+              return;
+
+        })
+       
         $("#priceblock_ourprice").filter(function(){
         var data=$(this);
         cost=data.text();
-       // console.log(cost);         
-        })
-        $("#priceblock_dealprice").filter(function(){
-        var data=$(this);
-        cost=data.text();
        // console.log(cost);
+        MongoClient.connect(url, { useNewUrlParser: true ,useUnifiedTopology: true},async function(err, db) {
+            if (err) throw err;
+            var dbo = db.db("admin1");
+            var myobj={ link :link1,price:cost,mail:mail1};
+            console.log(cost);
+            dbo.collection("maincollection").insertOne(myobj,(err,res)=>{
+                if(err) throw err;
+                console.log("INSERTED");
+                db.close();
+            })
+            
+          });
+          return;       
         })
-        //console.log(cost);
-        return await (cost);
+        
+        
+    
     })
     
 
