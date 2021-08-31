@@ -7,8 +7,9 @@ var url = "mongodb+srv://admin:admin@producttracking.7oyuk.mongodb.net/admin1?re
 
 
 var mail1;
-router.delete('/',function(req, res) {
-    mail1=req.query.user_email;
+router.post('/',function(req, res) {
+    mail1=req.body.useremail;
+    console.log(mail1);
     MongoClient.connect(url, { useNewUrlParser: true ,useUnifiedTopology: true}, function(err, db) {
         if (err)
             throw err;

@@ -1,17 +1,79 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+class AddProduct extends React.Component {
+  
+  render() {
+    return (
+      <form action="../../addProduct" method="post" >
+      <h1>Add New Product </h1>
+      <p>Enter your email:</p>
+      <input
+        type='text'
+        name='useremail'
+        
+      />
+      <p>Enter link:</p>
+      <input
+        type='text'
+        name='link'
+      />
+      <br/>
+      <br/>
+      <input type='submit' value="ADD" />
+      </form>
+    );
+  }
+}
+
+
+class DeleteProduct extends React.Component {
+  
+  render() {
+    return (
+      <form action="../../deleteProduct" method="post" >
+      <h1>Remove your Product From List</h1>
+      <p>Enter your email:</p>
+      <input
+        type='text'
+        name='useremail'
+        
+      />
+      <p>Enter link:</p>
+      <input
+        type='text'
+        name='link'
+      />
+      <br/>
+      <br/>
+      <input type='submit' value="REMOVE" />
+      </form>
+    );
+  }
+}
+
+class Unsubscribe extends React.Component {
+  
+  render() {
+    return (
+      <form action="../../unSubscribe" method="post" >
+      <h1>UNSUBSCRIBE</h1>
+      <p>Enter your email:</p>
+      <input
+        type='text'
+        name='useremail'
+        
+      />
+      <br/>
+      <br/>
+      <input type='submit' value="UNSUBSCRIBE" />
+      </form>
+    );
+  }
+}
+
+
+ReactDOM.render(<AddProduct />, document.getElementById('addProduct'));
+ReactDOM.render(<DeleteProduct />, document.getElementById('deleteProduct'));
+ReactDOM.render(<Unsubscribe />, document.getElementById('Unsubscribe'));

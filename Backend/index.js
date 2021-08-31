@@ -1,9 +1,12 @@
 const express = require('express');
 const path = require('path');
-var bodyParser = require('body-parser')
-const app = express();
-app.use(express.json());
 
+const app = express();
+
+app.use(express.urlencoded({
+  extended: true
+}));
+app.use(express.json());
 var addProduct = require('./addProduct');
 var unSubscribe = require('./unSubscribe');
 
