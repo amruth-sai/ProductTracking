@@ -54,13 +54,8 @@ router.post('/',function(req, res) {
           });
           return;       
         })
-        
-        
-    
     })
-    
-    
-    res.send("DONE");
+    res.redirect('/');
 
 });
 module.exports = router;
